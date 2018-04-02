@@ -1,21 +1,12 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import * as BooksAPI from '../BooksAPI'
-import BookDisplay from './BookDisplay'
+//import * as BooksAPI from '../BooksAPI'
+//import BookDisplay from './BookDisplay'
 
 class SearchBooks extends Component {
 
     state = {
         books: []
-    }
-
-    componentDidMount() {
-        BooksAPI.getAll().then(books => {
-            //console.log(books)
-            this.setState(() => {
-                return { books }
-            })
-        })
     }
 
     render() {
@@ -45,11 +36,11 @@ class SearchBooks extends Component {
                 </div>
                 <div className="search-books-results">
                     <ol className="books-grid">
-                        {this.state.books.length && 
+                        {/* {this.state.books.length && 
                             this.state.books.map((book) => {
                                 return <BookDisplay key={book.id} title={book.title} authors={book.authors} imageLinks={book.imageLinks}/>
                             })
-                        }
+                        } */}
                     </ol>
                 </div>
             </div>

@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import BookDisplay from './BookDisplay'
-import * as BooksAPI from '../BooksAPI'
-
 
 class ListBooks extends Component {
 
@@ -10,9 +8,7 @@ class ListBooks extends Component {
 
     render() {
 
-        console.log(this.props.books)
-
-        const { books } = this.props
+        const { books, moveBook } = this.props
 
         return (
             <div className="list-books">
@@ -25,11 +21,11 @@ class ListBooks extends Component {
                             <h2 className="bookshelf-title">Currently Reading</h2>
                             <div className="bookshelf-books">
                                 <ol className="books-grid">
-                                    {books.length &&
+                                    {books.length > 0 &&
                                         books.filter(book => {
                                             return book.shelf === "currentlyReading"
                                         }).map((book) => {
-                                            return <BookDisplay key={book.id} book={book} />
+                                            return <BookDisplay key={book.id} book={book} moveBook={moveBook} />
                                         })
                                     }
                                 </ol>
@@ -41,11 +37,11 @@ class ListBooks extends Component {
                                 <ol className="books-grid">
 
 
-                                    {books.length &&
+                                    {books.length > 0 &&
                                         books.filter(book => {
                                             return book.shelf === "wantToRead"
                                         }).map((book) => {
-                                            return <BookDisplay key={book.id} book={book} />
+                                            return <BookDisplay key={book.id} book={book} moveBook={moveBook}/>
                                         })
                                     }
                                 </ol>
@@ -56,22 +52,24 @@ class ListBooks extends Component {
                             <div className="bookshelf-books">
                                 <ol className="books-grid">
 
-                                    {books.length &&
+                                    {books.length > 0 &&
                                         books.filter(book => {
                                             return book.shelf === "read"
                                         }).map((book) => {
-                                            return <BookDisplay key={book.id} book={book} />
+                                            return <BookDisplay key={book.id} book={book} moveBook={moveBook}/>
                                         })
                                     }
+
 
                                 </ol>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className="open-search">
-                    {/* <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a> */}
 
+
+
+                <div className="open-search">
                     <Link
                         to="/search"
                     >

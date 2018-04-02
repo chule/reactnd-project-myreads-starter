@@ -7,7 +7,8 @@ import './App.css'
 
 class BooksApp extends React.Component {
   state = {
-    books: []
+    books: [],
+    shelfs: ['currentlyReading', 'wantToRead', 'read']
   }
 
   componentDidMount() {
@@ -18,12 +19,30 @@ class BooksApp extends React.Component {
     })
   }
 
+  moveBook = (book, shelf) => {
+    this.setState(currentState => {
+      return {
+        books: currentState.books.map(b => {
+          if (b.id === book.id) {
+            return { ...b, shelf }
+          } else {
+            return b
+          }
+        })
+      }
+    })
+
+    BooksAPI.update(book, shelf)
+
+
+  }
+
   render() {
     return (
       <div className="app">
 
         <Route exact path="/" render={() => (
-          <ListBooks books={this.state.books} />)
+          <ListBooks books={this.state.books} moveBook={this.moveBook} />)
         } />
 
         <Route path="/search" render={() => (

@@ -3,17 +3,10 @@ import React, { Component } from 'react'
 
 class Options extends Component {
 
-
     handleChange = (event) => {
-        //this.setState({ value: event.target.value });
-
-
         if (event.target.value !== 'none') {
             this.props.moveBook(this.props.book, event.target.value)
         }
-
-
-
     }
 
     render() {

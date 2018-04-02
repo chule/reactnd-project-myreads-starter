@@ -1,22 +1,31 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import * as BooksAPI from '../BooksAPI'
+import BookDisplay from './BookDisplay'
 
 class SearchBooks extends Component {
 
+    state = {
+        books: []
+    }
+
     componentDidMount() {
         BooksAPI.getAll().then(books => {
-            console.log(books)
+            //console.log(books)
+            this.setState(() => {
+                return { books }
+            })
         })
     }
 
     render() {
+        //const { title, authors, imageLinks } = this.state.books
         return (
 
             <div className="search-books">
                 <div className="search-books-bar">
                     {/* <a className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</a> */}
-                    <Link 
+                    <Link
                         to='/'
                         className="close-search"
                     />
@@ -35,7 +44,13 @@ class SearchBooks extends Component {
                     </div>
                 </div>
                 <div className="search-books-results">
-                    <ol className="books-grid"></ol>
+                    <ol className="books-grid">
+                        {this.state.books.length && 
+                            this.state.books.map((book) => {
+                                return <BookDisplay key={book.id} title={book.title} authors={book.authors} imageLinks={book.imageLinks}/>
+                            })
+                        }
+                    </ol>
                 </div>
             </div>
         )

@@ -5,14 +5,14 @@ class Options extends Component {
 
     handleChange = (event) => {
         if (event.target.value !== 'none') {
-            this.props.moveBook(this.props.book, event.target.value)
+            this.props.bookAction(this.props.book, event.target.value)
         }
     }
 
     render() {
 
         return (
-            <select value={this.props.book.shelf} onChange={this.handleChange}>
+            <select value={this.props.book.shelf || "none"} onChange={this.handleChange}>
                 <option value="none" disabled>Move to...</option>
                 <option value="currentlyReading">
                     Currently Reading

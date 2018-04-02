@@ -1,16 +1,36 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-//import * as BooksAPI from '../BooksAPI'
-//import BookDisplay from './BookDisplay'
+import * as BooksAPI from '../BooksAPI'
+import BookDisplay from './BookDisplay'
 
 class SearchBooks extends Component {
 
     state = {
-        books: []
+        query: '',
+        bookList: []
+    }
+
+
+    updateQuery = (query) => {
+        this.setState(() => ({
+            query: query.trim()
+        }))
+
+        BooksAPI.search(query.trim()).then(data => {
+            this.setState(() => ({
+                bookList: data
+            }))
+        })
+    }
+
+    clearQuery = () => {
+        this.updateQuery("");
     }
 
     render() {
-        //const { title, authors, imageLinks } = this.state.books
+        
+        const { query, bookList } = this.state
+
         return (
 
             <div className="search-books">
@@ -30,17 +50,22 @@ class SearchBooks extends Component {
                 However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                 you don't find a specific author or title. Every search is limited by search terms.
               */}
-                        <input type="text" placeholder="Search by title or author" />
+                        <input
+                            value={query}
+                            onChange={(event) => this.updateQuery(event.target.value)}
+                            type="text"
+                            placeholder="Search by title or author"
+                        />
 
                     </div>
                 </div>
                 <div className="search-books-results">
                     <ol className="books-grid">
-                        {/* {this.state.books.length && 
-                            this.state.books.map((book) => {
-                                return <BookDisplay key={book.id} title={book.title} authors={book.authors} imageLinks={book.imageLinks}/>
+                        {bookList.length > 0 &&
+                            bookList.map((book) => {
+                                return <BookDisplay key={book.id} book={book} bookAction={this.props.bookAction} />
                             })
-                        } */}
+                        }
                     </ol>
                 </div>
             </div>

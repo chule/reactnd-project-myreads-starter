@@ -8,7 +8,7 @@ class ListBooks extends Component {
 
     render() {
 
-        const { books, moveBook } = this.props
+        const { books, bookAction } = this.props
 
         return (
             <div className="list-books">
@@ -25,7 +25,7 @@ class ListBooks extends Component {
                                         books.filter(book => {
                                             return book.shelf === "currentlyReading"
                                         }).map((book) => {
-                                            return <BookDisplay key={book.id} book={book} moveBook={moveBook} />
+                                            return <BookDisplay key={book.id} book={book} bookAction={bookAction} />
                                         })
                                     }
                                 </ol>
@@ -41,7 +41,7 @@ class ListBooks extends Component {
                                         books.filter(book => {
                                             return book.shelf === "wantToRead"
                                         }).map((book) => {
-                                            return <BookDisplay key={book.id} book={book} moveBook={moveBook}/>
+                                            return <BookDisplay key={book.id} book={book} bookAction={bookAction}/>
                                         })
                                     }
                                 </ol>
@@ -56,7 +56,7 @@ class ListBooks extends Component {
                                         books.filter(book => {
                                             return book.shelf === "read"
                                         }).map((book) => {
-                                            return <BookDisplay key={book.id} book={book} moveBook={moveBook}/>
+                                            return <BookDisplay key={book.id} book={book} bookAction={bookAction}/>
                                         })
                                     }
 

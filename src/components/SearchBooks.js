@@ -1,7 +1,15 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import * as BooksAPI from '../BooksAPI'
 
 class SearchBooks extends Component {
+
+    componentDidMount() {
+        BooksAPI.getAll().then(books => {
+            console.log(books)
+        })
+    }
+
     render() {
         return (
 

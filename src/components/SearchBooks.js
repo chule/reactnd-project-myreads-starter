@@ -14,8 +14,6 @@ class SearchBooks extends Component {
 
         //console.log('query',query)
         if (query.trim() === '') {
-
-            console.log('query is empty')
             this.setState(() => ({
                 query: '',
                 bookList: []
@@ -26,13 +24,13 @@ class SearchBooks extends Component {
             }))
 
             const searthTerm = query.trim()
-            console.log('searthTerm', searthTerm)
             BooksAPI.search(searthTerm).then(data => {
-                console.log(data)
                 if (data) {
-                    this.setState(() => ({
-                        bookList: data
-                    }))
+                    if (this.state.query !== '') {
+                        this.setState(() => ({
+                            bookList: data
+                        }))
+                    }
                 }
             })
         }

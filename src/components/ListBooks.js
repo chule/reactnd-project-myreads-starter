@@ -4,12 +4,8 @@ import BookDisplay from './BookDisplay'
 
 class ListBooks extends Component {
 
-
-
     render() {
-
         const { books, bookAction } = this.props
-
         return (
             <div className="list-books">
                 <div className="list-books-title">

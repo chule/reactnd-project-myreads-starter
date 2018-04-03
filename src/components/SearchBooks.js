@@ -10,25 +10,37 @@ class SearchBooks extends Component {
         bookList: []
     }
 
-
     updateQuery = (query) => {
-        this.setState(() => ({
-            query: query.trim()
-        }))
 
-        BooksAPI.search(query.trim()).then(data => {
+        //console.log('query',query)
+        if (query.trim() === '') {
+
+            console.log('query is empty')
             this.setState(() => ({
-                bookList: data
+                query: '',
+                bookList: []
             }))
-        })
-    }
+        } else {
+            this.setState(() => ({
+                query: query //.trim()
+            }))
 
-    clearQuery = () => {
-        this.updateQuery("");
+            const searthTerm = query.trim()
+            console.log('searthTerm', searthTerm)
+            BooksAPI.search(searthTerm).then(data => {
+                console.log(data)
+                if (data) {
+                    this.setState(() => ({
+                        bookList: data
+                    }))
+                }
+            })
+        }
+
     }
 
     render() {
-        
+
         const { query, bookList } = this.state
 
         return (

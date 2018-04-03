@@ -1,9 +1,11 @@
 import React from 'react'
 import Options from './Options'
+import noImage from '../icons/noImage.png'
 
 const BookDisplay = ({ book, bookAction }) => {
     const { title, authors, imageLinks } = book
-    let authorsList
+    let authorsList, image
+
     if (authors) {
         authorsList = authors.map((author, i) => {
             return i === authors.length - 1
@@ -12,11 +14,18 @@ const BookDisplay = ({ book, bookAction }) => {
         })
     }
 
+    if (!imageLinks) {
+        console.log(book)
+        image = noImage
+    } else {
+        image = imageLinks.smallThumbnail
+    }
+
     return (
         <li>
             <div className="book">
                 <div className="book-top">
-                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${imageLinks.smallThumbnail})` }}></div>
+                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${image})` }}></div>
                     <div className="book-shelf-changer">
                         <Options book={book} bookAction={bookAction} />
                     </div>

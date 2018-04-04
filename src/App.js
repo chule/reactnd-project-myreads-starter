@@ -20,6 +20,16 @@ class BooksApp extends React.Component {
     })
   }
 
+  addBook = (book, shelf) => {
+    this.setState(currentState => {
+      return {
+        books: [...currentState.books, { ...book, shelf }]
+      }
+    })
+
+    BooksAPI.update(book, shelf)
+  }
+
   moveBook = (book, shelf) => {
     this.setState(currentState => {
       return {
@@ -42,6 +52,7 @@ class BooksApp extends React.Component {
         searchList: []
       }))
     } else {
+
       this.setState(() => ({
         query: query
       }))
@@ -49,6 +60,11 @@ class BooksApp extends React.Component {
       const searthTerm = query.trim()
       BooksAPI.search(searthTerm).then(data => {
         if (data) {
+          /*
+            don't change state if query is empty
+            sometimes data from API returns after user deletes 
+            all search query so this prevents that
+           */
           if (this.state.query !== '') {
             this.setState(() => ({
               searchList: data
@@ -56,20 +72,10 @@ class BooksApp extends React.Component {
           }
         }
       })
+
     }
+    
   }
-
-  addBook = (book, shelf) => {
-
-    this.setState(currentState => {
-      return {
-        books: [...currentState.books, { ...book, shelf }]
-      }
-    })
-
-    BooksAPI.update(book, shelf)
-  }
-
 
   render() {
     return (
@@ -77,7 +83,7 @@ class BooksApp extends React.Component {
 
         <Route exact path="/" render={() => (
           <ListBooks books={this.state.books} bookAction={this.moveBook} />)
-        } />
+        }/>
 
         <Route path="/search" render={() => (
           <SearchBooks
@@ -87,7 +93,7 @@ class BooksApp extends React.Component {
             searchList={this.state.searchList}
             query={this.state.query}
           />)
-        } />
+        }/>
 
       </div>
     )

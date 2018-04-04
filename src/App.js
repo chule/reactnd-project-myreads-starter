@@ -58,27 +58,28 @@ class BooksApp extends React.Component {
       }))
 
       const searthTerm = query.trim()
-      BooksAPI.search(searthTerm).then(data => {
-        if (data) {
-          /*
-            sometimes data from API returns after user deletes 
-            all search query so this prevents updating state
-           */
-          if (this.state.query !== '') {
-            this.setState(() => ({
-              searchList: data
-            }))
+      BooksAPI.search(searthTerm)
+        .then(data => {
+          if (Array.isArray(data)) {
+            /*
+              sometimes data from API returns after user deletes 
+              all search query so this prevents updating state
+            */
+            if (this.state.query !== '') {
+              this.setState(() => ({
+                searchList: data
+              }))
+            }
           }
-        }
-      })
+        })
 
     }
-    
+
   }
 
   render() {
 
-    const {books, searchList, query} = this.state
+    const { books, searchList, query } = this.state
 
     return (
       <div className="app">

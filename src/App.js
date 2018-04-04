@@ -61,9 +61,8 @@ class BooksApp extends React.Component {
       BooksAPI.search(searthTerm).then(data => {
         if (data) {
           /*
-            don't change state if query is empty
             sometimes data from API returns after user deletes 
-            all search query so this prevents that
+            all search query so this prevents updating state
            */
           if (this.state.query !== '') {
             this.setState(() => ({

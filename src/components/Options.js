@@ -1,7 +1,12 @@
 import React, { Component } from 'react'
-//import * as BooksAPI from '../BooksAPI'
+import PropTypes from "prop-types"
 
 class Options extends Component {
+
+    static propTypes = {
+        book: PropTypes.object.isRequired,
+        bookAction: PropTypes.func.isRequired
+    }
 
     handleChange = (event) => {
         if (event.target.value !== 'none') {
@@ -11,9 +16,11 @@ class Options extends Component {
 
     render() {
 
+        let { book } = this.props
+
         return (
-            <select value={this.props.book.shelf || "none"} onChange={this.handleChange}>
-                <option value="none" disabled>Move to...</option>
+            <select value={book.shelf || "none"} onChange={this.handleChange}>
+                <option value="move" disabled>Move to...</option>
                 <option value="currentlyReading">
                     Currently Reading
                 </option>

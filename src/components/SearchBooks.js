@@ -1,67 +1,41 @@
 import React, { Component } from 'react'
+import PropTypes from "prop-types"
 import { Link } from 'react-router-dom'
-import * as BooksAPI from '../BooksAPI'
 import BookDisplay from './BookDisplay'
 
 class SearchBooks extends Component {
 
-    state = {
-        query: '',
-        bookList: []
+    static propTypes = {
+        books: PropTypes.array.isRequired,
+        bookAction: PropTypes.func.isRequired,
+        updateQuery: PropTypes.func.isRequired,
+        searchList: PropTypes.array.isRequired,
+        query: PropTypes.string.isRequired
     }
 
-    updateQuery = (query) => {
-
-        //console.log('query',query)
-        if (query.trim() === '') {
-            this.setState(() => ({
-                query: '',
-                bookList: []
-            }))
-        } else {
-            this.setState(() => ({
-                query: query //.trim()
-            }))
-
-            const searthTerm = query.trim()
-            BooksAPI.search(searthTerm).then(data => {
-                if (data) {
-                    if (this.state.query !== '') {
-                        this.setState(() => ({
-                            bookList: data
-                        }))
-                    }
-                }
-            })
-        }
+    onUpdateQuery(query) {
+        this.props.updateQuery(query)
     }
 
     render() {
 
-        const { query, bookList } = this.state
+        const { query, searchList, books } = this.props
 
         return (
 
             <div className="search-books">
                 <div className="search-books-bar">
-                    {/* <a className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</a> */}
                     <Link
                         to='/'
                         className="close-search"
+                        onClick={() => this.onUpdateQuery('')} // if removed search query stays on search page
                     />
 
                     <div className="search-books-input-wrapper">
-                        {/*
-                NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                You can find these search terms here:
-                https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
 
-                However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                you don't find a specific author or title. Every search is limited by search terms.
-              */}
                         <input
                             value={query}
-                            onChange={(event) => this.updateQuery(event.target.value)}
+                            onChange={(event) => this.onUpdateQuery(event.target.value)}
                             type="text"
                             placeholder="Search by title or author"
                         />
@@ -70,9 +44,9 @@ class SearchBooks extends Component {
                 </div>
                 <div className="search-books-results">
                     <ol className="books-grid">
-                        {bookList.length > 0 &&
-                            bookList.map((book) => {
-                                return <BookDisplay key={book.id} book={book} bookAction={this.props.bookAction} />
+                        {searchList.length > 0 &&
+                            searchList.map((book) => {
+                                return <BookDisplay key={book.id} book={book} bookAction={this.props.bookAction} onShelf={books} />
                             })
                         }
                     </ol>

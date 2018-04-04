@@ -1,81 +1,38 @@
-import React, { Component } from 'react'
+import React from 'react'
+import PropTypes from "prop-types"
 import { Link } from 'react-router-dom'
-import BookDisplay from './BookDisplay'
+import Bookshelf from './Bookshelf'
 
-class ListBooks extends Component {
+const ListBooks = ({ books, bookAction }) => {
 
-    render() {
-        const { books, bookAction } = this.props
-        return (
-            <div className="list-books">
-                <div className="list-books-title">
-                    <h1>MyReads</h1>
-                </div>
-                <div className="list-books-content">
-                    <div>
-                        <div className="bookshelf">
-                            <h2 className="bookshelf-title">Currently Reading</h2>
-                            <div className="bookshelf-books">
-                                <ol className="books-grid">
-                                    {books.length > 0 &&
-                                        books.filter(book => {
-                                            return book.shelf === "currentlyReading"
-                                        }).map((book) => {
-                                            return <BookDisplay key={book.id} book={book} bookAction={bookAction} />
-                                        })
-                                    }
-                                </ol>
-                            </div>
-                        </div>
-                        <div className="bookshelf">
-                            <h2 className="bookshelf-title">Want to Read</h2>
-                            <div className="bookshelf-books">
-                                <ol className="books-grid">
+    return (
+        <div className="list-books">
+            <div className="list-books-title">
+                <h1>MyReads</h1>
+            </div>
+            <div className="list-books-content">
+                <div>
+                    <Bookshelf bookshelfTitle="Currently Reading" books={books} bookAction={bookAction} shelfDisplay="currentlyReading" />
 
+                    <Bookshelf bookshelfTitle="Want to Read" books={books} bookAction={bookAction} shelfDisplay="wantToRead" />
 
-                                    {books.length > 0 &&
-                                        books.filter(book => {
-                                            return book.shelf === "wantToRead"
-                                        }).map((book) => {
-                                            return <BookDisplay key={book.id} book={book} bookAction={bookAction}/>
-                                        })
-                                    }
-                                </ol>
-                            </div>
-                        </div>
-                        <div className="bookshelf">
-                            <h2 className="bookshelf-title">Read</h2>
-                            <div className="bookshelf-books">
-                                <ol className="books-grid">
-
-                                    {books.length > 0 &&
-                                        books.filter(book => {
-                                            return book.shelf === "read"
-                                        }).map((book) => {
-                                            return <BookDisplay key={book.id} book={book} bookAction={bookAction}/>
-                                        })
-                                    }
-
-
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-
-                <div className="open-search">
-                    <Link
-                        to="/search"
-                    >
-                        Add Contact
-                    </Link>
-
+                    <Bookshelf bookshelfTitle="Read" books={books} bookAction={bookAction} shelfDisplay="read" />
                 </div>
             </div>
-        )
-    }
+
+            <div className="open-search">
+                <Link to="/search">
+                    Add Contact
+                    </Link>
+            </div>
+        </div>
+    )
+
+}
+
+ListBooks.propTypes = {
+    books: PropTypes.array.isRequired,
+    bookAction: PropTypes.func.isRequired
 }
 
 export default ListBooks

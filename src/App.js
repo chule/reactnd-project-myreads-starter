@@ -8,7 +8,8 @@ import './App.css'
 class BooksApp extends React.Component {
   state = {
     books: [],
-    shelfs: ['currentlyReading', 'wantToRead', 'read']
+    searchList: [],
+    query: ''
   }
 
   componentDidMount() {
@@ -23,11 +24,9 @@ class BooksApp extends React.Component {
     this.setState(currentState => {
       return {
         books: currentState.books.map(b => {
-          if (b.id === book.id) {
-            return { ...b, shelf }
-          } else {
-            return b
-          }
+          return b.id === book.id
+            ? { ...b, shelf }
+            : b
         })
       }
     })
@@ -35,12 +34,36 @@ class BooksApp extends React.Component {
     BooksAPI.update(book, shelf)
   }
 
+  updateQuery = (query) => {
+
+    if (query.trim() === '') {
+      this.setState(() => ({
+        query: '',
+        searchList: []
+      }))
+    } else {
+      this.setState(() => ({
+        query: query
+      }))
+
+      const searthTerm = query.trim()
+      BooksAPI.search(searthTerm).then(data => {
+        if (data) {
+          if (this.state.query !== '') {
+            this.setState(() => ({
+              searchList: data
+            }))
+          }
+        }
+      })
+    }
+  }
+
   addBook = (book, shelf) => {
 
-    console.log("bookAction addBook")
     this.setState(currentState => {
       return {
-        books: [...currentState.books, {...book, shelf}]
+        books: [...currentState.books, { ...book, shelf }]
       }
     })
 
@@ -57,7 +80,13 @@ class BooksApp extends React.Component {
         } />
 
         <Route path="/search" render={() => (
-          <SearchBooks bookAction={this.addBook} />)
+          <SearchBooks
+            books={this.state.books}
+            bookAction={this.addBook}
+            updateQuery={this.updateQuery}
+            searchList={this.state.searchList}
+            query={this.state.query}
+          />)
         } />
 
       </div>

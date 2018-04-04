@@ -1,8 +1,9 @@
 import React from 'react'
+import PropTypes from "prop-types"
 import Options from './Options'
 import noImage from '../icons/noImage.png'
 
-const BookDisplay = ({ book, bookAction }) => {
+const BookDisplay = ({ book, bookAction, onShelf }) => {
     const { title, authors, imageLinks } = book
     let authorsList, image
 
@@ -14,8 +15,15 @@ const BookDisplay = ({ book, bookAction }) => {
         })
     }
 
+    if (onShelf) {
+        onShelf.forEach(b => {
+            if (b.id === book.id) {
+                book = b
+            }
+        })
+    }
+
     if (!imageLinks) {
-        console.log(book)
         image = noImage
     } else {
         image = imageLinks.smallThumbnail
@@ -35,6 +43,12 @@ const BookDisplay = ({ book, bookAction }) => {
             </div>
         </li>
     )
+}
+
+BookDisplay.propTypes = {
+    book: PropTypes.object.isRequired,
+    bookAction: PropTypes.func.isRequired,
+    onShelf: PropTypes.array
 }
 
 export default BookDisplay

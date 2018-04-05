@@ -3,9 +3,9 @@ import PropTypes from "prop-types"
 import Options from './Options'
 import noImage from '../icons/noImage.png'
 
-const BookDisplay = ({ book, bookAction, onShelf }) => {
+const BookDisplay = ({ book, onShelf, moveBook, addBook, searchBooks }) => {
     const { title, authors, imageLinks } = book
-    let authorsList, image
+    let authorsList, image, bookAction
 
     if (authors) {
         authorsList = authors.map((author, i) => {
@@ -15,13 +15,21 @@ const BookDisplay = ({ book, bookAction, onShelf }) => {
         })
     }
 
-    if (onShelf) {
+    if (searchBooks) {
+        bookAction = addBook
+
         onShelf.forEach(b => {
             if (b.id === book.id) {
                 book = b
+                bookAction = moveBook
             }
         })
+
+    } else {
+        bookAction = moveBook
     }
+
+
 
     if (!imageLinks) {
         image = noImage
@@ -47,8 +55,10 @@ const BookDisplay = ({ book, bookAction, onShelf }) => {
 
 BookDisplay.propTypes = {
     book: PropTypes.object.isRequired,
-    bookAction: PropTypes.func.isRequired,
-    onShelf: PropTypes.array
+    onShelf: PropTypes.array,
+    searchBooks: PropTypes.bool,
+    moveBook: PropTypes.func.isRequired,
+    addBook: PropTypes.func
 }
 
 export default BookDisplay

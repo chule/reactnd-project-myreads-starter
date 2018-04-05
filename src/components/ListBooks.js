@@ -3,7 +3,13 @@ import PropTypes from "prop-types"
 import { Link } from 'react-router-dom'
 import Bookshelf from './Bookshelf'
 
-const ListBooks = ({ books, bookAction }) => {
+const ListBooks = ({ books, moveBook }) => {
+    
+    const shelves = [
+        { bookshelfTitle: "Currently Reading", shelfDisplay: "currentlyReading" },
+        { bookshelfTitle: "Want to Read", shelfDisplay: "wantToRead" },
+        { bookshelfTitle: "Read", shelfDisplay: "read" }
+    ]
 
     return (
         <div className="list-books">
@@ -12,11 +18,15 @@ const ListBooks = ({ books, bookAction }) => {
             </div>
             <div className="list-books-content">
                 <div>
-                    <Bookshelf bookshelfTitle="Currently Reading" books={books} bookAction={bookAction} shelfDisplay="currentlyReading" />
-
-                    <Bookshelf bookshelfTitle="Want to Read" books={books} bookAction={bookAction} shelfDisplay="wantToRead" />
-
-                    <Bookshelf bookshelfTitle="Read" books={books} bookAction={bookAction} shelfDisplay="read" />
+                    {shelves.map(shelf => (
+                        <Bookshelf
+                            key={shelf.shelfDisplay}
+                            bookshelfTitle={shelf.bookshelfTitle}
+                            books={books}
+                            moveBook={moveBook}
+                            shelfDisplay={shelf.shelfDisplay}
+                        />)
+                    )}
                 </div>
             </div>
 
@@ -32,7 +42,7 @@ const ListBooks = ({ books, bookAction }) => {
 
 ListBooks.propTypes = {
     books: PropTypes.array.isRequired,
-    bookAction: PropTypes.func.isRequired
+    moveBook: PropTypes.func.isRequired
 }
 
 export default ListBooks

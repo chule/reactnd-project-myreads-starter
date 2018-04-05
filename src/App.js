@@ -60,16 +60,23 @@ class BooksApp extends React.Component {
       const searthTerm = query.trim()
       BooksAPI.search(searthTerm)
         .then(data => {
-          if (Array.isArray(data)) {
+          if (Array.isArray(data) && this.state.query !== '') {
             /*
               sometimes data from API returns after user deletes 
               all search query so this prevents updating state
             */
-            if (this.state.query !== '') {
-              this.setState(() => ({
-                searchList: data
-              }))
-            }
+
+            this.setState(() => ({
+              searchList: data
+            }))
+
+          } else {
+            /*
+              if API returns error set state to empty array
+            */
+            this.setState(() => ({
+              searchList: []
+            }))
           }
         })
 
@@ -85,18 +92,19 @@ class BooksApp extends React.Component {
       <div className="app">
 
         <Route exact path="/" render={() => (
-          <ListBooks books={books} bookAction={this.moveBook} />)
-        }/>
+          <ListBooks books={books} moveBook={this.moveBook} />)
+        } />
 
         <Route path="/search" render={() => (
           <SearchBooks
             books={books}
-            bookAction={this.addBook}
+            addBook={this.addBook}
+            moveBook={this.moveBook}
             updateQuery={this.updateQuery}
             searchList={searchList}
             query={query}
           />)
-        }/>
+        } />
 
       </div>
     )

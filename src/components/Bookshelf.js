@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from "prop-types"
 import BookDisplay from './BookDisplay'
 
-const Bookshelf = ({ books, bookAction, bookshelfTitle, shelfDisplay }) => {
+const Bookshelf = ({ books, moveBook, bookshelfTitle, shelfDisplay }) => {
     return (
         <div className="bookshelf">
             <h2 className="bookshelf-title">{bookshelfTitle}</h2>
@@ -12,7 +12,7 @@ const Bookshelf = ({ books, bookAction, bookshelfTitle, shelfDisplay }) => {
                         books.filter(book => {
                             return book.shelf === shelfDisplay
                         }).map((book) => {
-                            return <BookDisplay key={book.id} book={book} bookAction={bookAction} />
+                            return <BookDisplay key={book.id} book={book} moveBook={moveBook} />
                         })
                     }
                 </ol>
@@ -23,7 +23,7 @@ const Bookshelf = ({ books, bookAction, bookshelfTitle, shelfDisplay }) => {
 
 Bookshelf.propTypes = {
     books: PropTypes.array.isRequired,
-    bookAction: PropTypes.func.isRequired,
+    moveBook: PropTypes.func.isRequired,
     bookshelfTitle: PropTypes.string.isRequired,
     shelfDisplay: PropTypes.string.isRequired
 }

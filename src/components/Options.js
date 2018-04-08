@@ -1,7 +1,7 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import PropTypes from "prop-types"
 
-class Options extends PureComponent {
+class Options extends Component {
 
     static propTypes = {
         book: PropTypes.object.isRequired,
@@ -9,7 +9,7 @@ class Options extends PureComponent {
     }
 
     handleChange = (event) => {
-            this.props.bookAction(this.props.book, event.target.value)
+        this.props.bookAction(this.props.book, event.target.value)
     }
 
     render() {

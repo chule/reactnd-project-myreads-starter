@@ -42,6 +42,7 @@ class BooksApp extends Component {
     })
 
     BooksAPI.update(book, shelf)
+    
   }
 
   updateQuery = (query) => {
@@ -60,7 +61,7 @@ class BooksApp extends Component {
       const searthTerm = query.trim()
       BooksAPI.search(searthTerm)
         .then(data => {
-          if (Array.isArray(data) && this.state.query !== '') {
+          if (Array.isArray(data) && this.state.query === query) {
             /*
               sometimes data from API returns after user deletes 
               all search query so this prevents updating state

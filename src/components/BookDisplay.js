@@ -1,63 +1,59 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 import PropTypes from "prop-types"
 import Options from './Options'
 import noImage from '../icons/noImage.png'
 
-class BookDisplay extends PureComponent {
+const BookDisplay = ({ book, addBook, moveBook, onShelf, searchBooks }) => {
 
-    componentWillMount() {
+        const { title, authors, imageLinks } = book
+        let authorsList, bookAction, image
 
-        const { title, authors, imageLinks } = this.props.book
-
-        this.title = title
 
         if (authors) {
-            this.authorsList = authors.map((author, i) => {
+            authorsList = authors.map((author, i) => {
                 return i === authors.length - 1
                     ? <span key={i}>{`${author}`}</span>
                     : <span key={i}>{`${author}, `}</span>
             })
         }
 
-        if (this.props.searchBooks) {
-            this.bookAction = this.props.addBook
-            this.book = this.props.book
-            this.props.onShelf.forEach(b => {
-                if (b.id === this.props.book.id) {
-                    this.book = b
-                    this.bookAction = this.props.moveBook
+        if (searchBooks) {
+
+            bookAction = addBook
+
+            onShelf.forEach(b => {
+                if (b.id === book.id) {
+                    book = b
+                    bookAction = moveBook
                 }
             })
 
         } else {
-            this.bookAction = this.props.moveBook
-            this.book = this.props.book
+            bookAction = moveBook
+
         }
 
         if (!imageLinks) {
-            this.image = noImage
+            image = noImage
         } else {
-            this.image = imageLinks.smallThumbnail
+            image = imageLinks.smallThumbnail
         }
-    }
-
-    render() {
 
         return (
             <li>
                 <div className="book">
                     <div className="book-top">
-                        <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${this.image})` }}></div>
+                        <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${image})` }}></div>
                         <div className="book-shelf-changer">
-                            <Options book={this.book} bookAction={this.bookAction} />
+                            <Options book={book} bookAction={bookAction} />
                         </div>
                     </div>
-                    <div className="book-title">{this.title}</div>
-                    <div className="book-authors">{this.authorsList}</div>
+                    <div className="book-title">{title}</div>
+                    <div className="book-authors">{authorsList}</div>
                 </div>
             </li>
         )
-    }
+
 
 }
 
